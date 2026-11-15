@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>All My Chats</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%232D6A4F'/><text x='50' y='68' font-size='46' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>S</text></svg>">
+<style>
+  :root{
+    --dark:#1B4332;      /* deep green */
+    --green:#2D6A4F;     /* title green */
+    --mint:#95D5B2;      /* pill mint */
+    --mint-soft:#B7E4C7;
+    --mint-bg:#D8F3DC;   /* body mint */
+    --bright:#80ED99;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:'Segoe UI',system-ui,sans-serif;
+    background:var(--mint-bg);
+    min-height:100vh;color:var(--dark);
+    display:flex;flex-direction:column;
+  }
+  /* white header with torn edge */
+  header{
+    background:#fff;padding:34px 22px 46px;position:relative;
+    border-radius:0 0 4px 4px;
+  }
+  header .top{display:flex;align-items:center;justify-content:space-between;}
+  h1{font-size:1.9rem;color:var(--green);font-weight:800;letter-spacing:.3px;}
+  .dots{color:var(--green);font-weight:900;letter-spacing:3px;font-size:1.1rem;}
+  .sub{margin-top:6px;font-size:.9rem;color:#52796F;}
+  .torn{display:block;width:100%;height:26px;margin-top:-1px;}
+  main{
+    flex:1;width:100%;max-width:440px;margin:0 auto;
+    padding:18px 20px 110px;
+    display:flex;flex-direction:column;gap:16px;
+  }
+  a.card{
+    display:flex;align-items:center;gap:16px;text-decoration:none;
+    background:var(--mint);color:var(--dark);
+    padding:16px 18px;border-radius:30px;
+    box-shadow:0 4px 0 rgba(27,67,50,.15);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  a.card:active{transform:scale(.96);box-shadow:0 1px 0 rgba(27,67,50,.2);}
+  a.card .icon{
+    width:58px;height:58px;border-radius:50%;background:var(--green);flex:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+  a.card .icon svg{width:30px;height:30px;fill:#fff;}
+  a.card .txt{display:flex;flex-direction:column;}
+  a.card .txt b{font-size:1.2rem;}
+  a.card .txt small{font-size:.78rem;color:#34594a;margin-top:2px;}
+  #tip{
+    display:none;margin-top:8px;
+    background:#fff;border:2px dashed var(--green);color:var(--dark);
+    border-radius:20px;padding:13px 16px;font-size:.86rem;line-height:1.5;
+  }
+  .madeby{text-align:center;font-size:.8rem;color:#52796F;margin-top:14px;}
+  .madeby b{color:var(--green);}
+  /* bottom nav bar, Feather style */
+  nav{
+    position:fixed;left:0;right:0;bottom:0;
+    background:var(--mint);border-radius:26px 26px 0 0;
+    display:flex;justify-content:space-around;align-items:center;
+    padding:14px 10px calc(14px + env(safe-area-inset-bottom));
+    box-shadow:0 -4px 14px rgba(27,67,50,.15);
+  }
+  nav a{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;text-decoration:none;}
+  nav a svg{width:26px;height:26px;fill:var(--dark);}
+  nav a.home{background:var(--green);}
+  nav a.home svg{fill:#fff;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top">
+    <h1>All My Chats</h1>
+    <span class="dots">•••</span>
+  </div>
+  <p class="sub">All accounts in one place — tap one to open it</p>
+</header>
+<svg class="torn" viewBox="0 0 400 26" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0,0 L400,0 L400,6 L388,10 L377,5 L362,12 L350,7 L338,14 L325,8 L311,15 L298,9 L284,16 L270,8 L257,14 L243,7 L230,13 L216,6 L203,15 L189,9 L176,16 L162,8 L149,14 L135,7 L122,13 L108,6 L95,15 L81,9 L68,16 L54,8 L41,14 L27,7 L14,13 L0,8 Z" fill="#ffffff"/>
+</svg>
+
+<main>
+  <a class="card" href="https://web.whatsapp.com/" target="_blank" rel="noopener">
+    <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4 0-.5.1-.7l.5-.6c.1-.2.1-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.9.9-1.1 2.2-.2 3.9a11.6 11.6 0 0 0 4.5 4.2c1.7.8 2.4.9 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.4-.2z"/></svg></span>
+    <span class="txt"><b>WhatsApp</b><small>web.whatsapp.com</small></span>
+  </a>
+  <a class="card" href="https://www.instagram.com/direct/inbox/" target="_blank" rel="noopener">
+    <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9-.1-1.3-.1-1.6-.1-4.8s0-3.6.1-4.8C2.4 4 4 2.4 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zm0 3.6a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-10.5a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9z"/></svg></span>
+    <span class="txt"><b>Instagram</b><small>Direct messages</small></span>
+  </a>
+  <a class="card" href="https://discord.com/app" target="_blank" rel="noopener">
+    <span class="icon"><svg viewBox="0 0 24 24"><path d="M19.3 5.3A17.4 17.4 0 0 0 15 4c-.2.4-.4.8-.6 1.1a13.2 13.2 0 0 0-4.8 0C9.4 4.8 9.2 4.4 9 4a17.2 17.2 0 0 0-4.3 1.3C2 9.3 1.3 13.2 1.6 17c1.8 1.3 3.5 2.1 5.2 2.7.4-.6.8-1.2 1.1-1.8-.6-.2-1.2-.5-1.8-.8l.4-.3c3.5 1.6 7.4 1.6 10.9 0l.4.3c-.6.3-1.2.6-1.8.8.3.6.7 1.2 1.1 1.8 1.7-.5 3.4-1.4 5.2-2.7.4-4.4-.7-8.2-3-11.7zM8.7 14.8c-1 0-1.9-1-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.9 2.1-1.9 2.1zm6.6 0c-1 0-1.9-1-1.9-2.1s.9-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1z"/></svg></span>
+    <span class="txt"><b>Discord</b><small>discord.com/app</small></span>
+  </a>
+  <a class="card" href="https://app.instinct.com/" target="_blank" rel="noopener">
+    <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.1 6.5L21 10l-6.9 1.5L12 18l-2.1-6.5L3 10l6.9-1.5L12 2zm7 12l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3z"/></svg></span>
+    <span class="txt"><b>Instinct</b><small>app.instinct.com</small></span>
+  </a>
+
+  <div id="tip">💡 <b>Tip:</b> this page works best in <b>Chrome</b> — tap the <b>⋮</b> menu at the top and choose <b>Open in Chrome</b>. Each app will ask you to log in the first time.</div>
+
+  <p class="madeby">Made by <b>Smiley</b> 💛</p>
+</main>
+
+<nav>
+  <a class="home" href="#" aria-label="Home"><svg viewBox="0 0 24 24"><path d="M12 3l9 8h-3v9h-4v-6H10v6H6v-9H3l9-8z"/></svg></a>
+  <a href="#tip" aria-label="Tips"><svg viewBox="0 0 24 24"><path d="M12 2a8 8 0 0 0-4 14.9V18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1.1A8 8 0 0 0 12 2zm-1 19h2v1a1 1 0 0 1-2 0v-1z"/></svg></a>
+  <a href="#" aria-label="Chat"><svg viewBox="0 0 24 24"><path d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2zm4 6a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm4 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm4 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/></svg></a>
+  <a href="#" aria-label="Profile"><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4 0-8 2-8 5v1a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1c0-3-4-5-8-5z"/></svg></a>
+</nav>
+
+<script>
+  var ua = navigator.userAgent || '';
+  if (/WhatsApp|FBAN|FBAV|Instagram|Telegram|Snapchat|Line\//i.test(ua)) {
+    document.getElementById('tip').style.display = 'block';
+  }
+</script>
+</body>
+</html>
