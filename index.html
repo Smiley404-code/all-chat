@@ -776,7 +776,7 @@
     $$('.arow.real', list).forEach(function(r){ r.remove(); });
     if (!q) { $$('.arow.demo', list).forEach(function(r){ r.style.display=''; }); return; }
     $$('.arow.demo', list).forEach(function(r){ r.style.display='none'; });
-    var r = await sb.from('profiles').select('id,username').ilike('username', '%'+q.replace(/[%_]/g,'')+'%').neq('id', me.id).limit(20);
+    var r = await sb.from('profiles').select('id,username').ilike('username', '%'+q.replace(/%/g,'')+'%').neq('id', me.id).limit(20);
     var data = r.data || [];
     if (!data.length){
       var d = document.createElement('div');
