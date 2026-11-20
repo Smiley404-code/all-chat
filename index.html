@@ -737,6 +737,11 @@
 
   async function afterLogin(){
     var r = await sb.from('profiles').select('username').eq('id', me.id).maybeSingle();
+    if (!r.data) {
+      var un = (me.user_metadata && me.user_metadata.username) || ('user_' + me.id.slice(0,8));
+      await sb.from('profiles').insert({ id: me.id, username: un });
+      r = await sb.from('profiles').select('username').eq('id', me.id).maybeSingle();
+    }
     myName = (r.data && r.data.username) || (me.user_metadata && me.user_metadata.username) || 'me';
     auth.hidden = true;
     showMenuAuth();
