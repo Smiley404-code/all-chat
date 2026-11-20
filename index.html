@@ -226,6 +226,20 @@
   .sheet a,.sheet button{display:flex;align-items:center;gap:12px;width:100%;padding:13px 6px;border:none;background:#fff;font-size:.95rem;font-weight:700;color:var(--dark);cursor:pointer;text-decoration:none;border-radius:12px;}
   .sheet a:active,.sheet button:active{background:var(--mint-bg);}
   .sheet .e{font-size:1.3rem;}
+
+  .auth{position:fixed;inset:0;background:var(--mint-bg);z-index:80;display:flex;align-items:center;justify-content:center;padding:24px;}
+  .auth .card{background:#fff;border-radius:20px;padding:26px 22px;width:100%;max-width:340px;box-shadow:0 8px 30px rgba(27,67,50,.18);}
+  .auth h1{font-size:1.4rem;color:var(--dark);margin:0 0 4px;}
+  .auth .sub{font-size:.85rem;color:#52796F;margin-bottom:16px;}
+  .auth input{width:100%;padding:13px 14px;border-radius:12px;border:2px solid var(--mint-soft);background:var(--mint-bg);font:inherit;font-size:.95rem;margin-bottom:10px;outline:none;}
+  .auth input:focus{border-color:var(--green);}
+  .auth .go{width:100%;padding:14px;border:none;border-radius:999px;background:var(--dark);color:#fff;font-weight:800;font-size:1rem;cursor:pointer;}
+  .auth .go:active{background:var(--green);}
+  .auth .err{color:#B91C1C;font-size:.82rem;min-height:1.2em;margin:2px 0 8px;}
+  .auth .sw{margin-top:12px;text-align:center;font-size:.85rem;color:#52796F;}
+  .auth .sw button{background:none;border:none;color:var(--green);font-weight:800;font:inherit;font-size:.85rem;cursor:pointer;text-decoration:underline;}
+  .auth .skip{margin-top:10px;text-align:center;}
+  .auth .skip button{background:none;border:none;color:#8AA9A0;font:inherit;font-size:.78rem;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -238,6 +252,8 @@
       <button data-go="profile">👤 My profile</button>
       <button id="menuAccounts">🔗 Manage linked accounts</button>
       <button data-go="notifications">🔔 Notifications</button>
+      <button id="menuLogin" hidden>🔑 Log in / Sign up</button>
+      <button id="menuLogout" hidden>🚪 Log out</button>
     </div>
   </header>
 
@@ -329,9 +345,9 @@
         <button class="chip">Other</button>
       </div>
       <div id="searchList">
-        <button class="arow" data-go="user"><div class="avatar">👑</div><div><div class="n">Smiley king</div><div class="s">About the account</div></div><span class="r">›</span></button>
-        <button class="arow" data-go="user"><div class="avatar">😄</div><div><div class="n">Lol smiley</div><div class="s">About the account</div></div><span class="r">›</span></button>
-        <button class="arow" data-go="user"><div class="avatar">👋</div><div><div class="n">Bybe smiley</div><div class="s">About the account</div></div><span class="r">🔒</span></button>
+        <button class="arow demo" data-go="user"><div class="avatar">👑</div><div><div class="n">Smiley king</div><div class="s">About the account</div></div><span class="r">›</span></button>
+        <button class="arow demo" data-go="user"><div class="avatar">😄</div><div><div class="n">Lol smiley</div><div class="s">About the account</div></div><span class="r">›</span></button>
+        <button class="arow demo" data-go="user"><div class="avatar">👋</div><div><div class="n">Bybe smiley</div><div class="s">About the account</div></div><span class="r">🔒</span></button>
       </div>
     </section>
 
@@ -343,11 +359,13 @@
         <button class="chip on">Friend</button>
         <button class="chip">Channel's</button>
       </div>
-      <button class="crow" data-go="chat"><div class="avatar">👑</div><div><div class="n">Smiley king</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
-      <button class="crow" data-go="chat"><div class="avatar">👧</div><div><div class="n">Riya Dev</div><div class="m">Message received</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
-      <button class="crow" data-go="chat"><div class="avatar">💻</div><div><div class="n">Kumar Tech</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
-      <button class="crow" data-go="chat"><div class="avatar">😄</div><div><div class="n">Lol smiley</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
-      <button class="crow" data-go="chat"><div class="avatar">👋</div><div><div class="n">Bybe smiley</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
+      <div id="convList"></div>
+      <div id="noChats" hidden style="text-align:center;color:#52796F;font-size:.85rem;padding:26px 10px;">No chats yet 💬<br>Find friends in 🔍 Search and tap one to start chatting!</div>
+      <button class="crow demo" data-go="chat"><div class="avatar">👑</div><div><div class="n">Smiley king</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
+      <button class="crow demo" data-go="chat"><div class="avatar">👧</div><div><div class="n">Riya Dev</div><div class="m">Message received</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
+      <button class="crow demo" data-go="chat"><div class="avatar">💻</div><div><div class="n">Kumar Tech</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
+      <button class="crow demo" data-go="chat"><div class="avatar">😄</div><div><div class="n">Lol smiley</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
+      <button class="crow demo" data-go="chat"><div class="avatar">👋</div><div><div class="n">Bybe smiley</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
     </section>
 
     <!-- CHAT -->
@@ -355,7 +373,7 @@
       <div class="chat-head">
         <button class="bk" data-go="messages">←</button>
         <div class="avatar">👑</div>
-        <div><div class="nm">Smiley king</div><div class="st">● Online now</div></div>
+        <div><div class="nm" id="chatName">Smiley king</div><div class="st" id="chatStatus">● Online now</div></div>
         <div class="ic"><span>📞</span><span>📹</span></div>
       </div>
       <div class="msgs" id="msgs">
@@ -480,6 +498,19 @@
     <a href="https://www.instagram.com/direct/inbox/" target="_blank" rel="noopener"><span class="e">📸</span>Instagram — Direct messages</a>
     <a href="https://discord.com/app" target="_blank" rel="noopener"><span class="e">🎮</span>Discord — discord.com/app</a>
     <a href="https://app.instinct.com/" target="_blank" rel="noopener"><span class="e">✨</span>Instinct — app.instinct.com</a>
+  </div>
+
+  <div class="auth" id="auth" hidden>
+    <div class="card">
+      <h1>Feather 🪶</h1>
+      <div class="sub" id="authSub">Log in to chat with your friends for real!</div>
+      <input id="authUser" placeholder="Username" autocomplete="username" autocapitalize="none">
+      <input id="authPass" type="password" placeholder="Password" autocomplete="current-password">
+      <div class="err" id="authErr"></div>
+      <button class="go" id="authGo">Log in</button>
+      <div class="sw" id="authSw">New here? <button id="authToggle">Create an account</button></div>
+      <div class="skip"><button id="authSkip">Just looking around →</button></div>
+    </div>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -648,6 +679,198 @@
   });
 
   route();
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  var SUPA_URL = 'https://pktbulxtdobmylebxihw.supabase.co';
+  var SUPA_KEY = 'sb_publishable_Osvp7GdHx-FWOy5vBEy5iA_k9n5M9pp';
+  var sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+  var $ = function(s,r){ return (r||document).querySelector(s); };
+  var $$ = function(s,r){ return [].slice.call((r||document).querySelectorAll(s)); };
+  var me = null, myName = null, chatWith = null;
+  var auth = $('#auth'), err = $('#authErr'), mode = 'login';
+
+  function setMode(m){
+    mode = m;
+    $('#authGo').textContent = m === 'login' ? 'Log in' : 'Create account';
+    $('#authSub').textContent = m === 'login' ? 'Log in to chat with your friends for real!' : 'Pick a username and password. No email needed!';
+    $('#authSw').innerHTML = m === 'login' ? 'New here? <button id="authToggle">Create an account</button>' : 'Have an account? <button id="authToggle">Log in</button>';
+    $('#authToggle').addEventListener('click', function(){ setMode(mode === 'login' ? 'signup' : 'login'); });
+  }
+  setMode('login');
+  $('#authSkip').addEventListener('click', function(){ auth.hidden = true; showMenuAuth(); });
+
+  function showMenuAuth(){
+    $('#menuLogin').hidden = !!me;
+    $('#menuLogout').hidden = !me;
+  }
+
+  async function doAuth(){
+    var u = $('#authUser').value.trim().toLowerCase();
+    var p = $('#authPass').value;
+    err.textContent = '';
+    if (!/^[a-z0-9_]{3,20}$/.test(u)) { err.textContent = 'Username: 3-20 small letters, numbers or _'; return; }
+    if (p.length < 4) { err.textContent = 'Password needs 4+ characters'; return; }
+    $('#authGo').disabled = true;
+    try {
+      var email = u + '@feather.chat';
+      if (mode === 'signup'){
+        var r = await sb.auth.signUp({ email: email, password: p, options: { data: { username: u } } });
+        if (r.error) { err.textContent = /already/.test(r.error.message) ? 'That username is taken' : r.error.message; return; }
+        me = r.data.user;
+        if (!me) { err.textContent = 'Try logging in instead'; return; }
+        var pr = await sb.from('profiles').insert({ id: me.id, username: u });
+        if (pr.error && !/duplicate/.test(pr.error.message)) { err.textContent = pr.error.message; return; }
+        await afterLogin();
+      } else {
+        var r2 = await sb.auth.signInWithPassword({ email: email, password: p });
+        if (r2.error) { err.textContent = 'Wrong username or password'; return; }
+        me = r2.data.user;
+        await afterLogin();
+      }
+    } finally { $('#authGo').disabled = false; }
+  }
+  $('#authGo').addEventListener('click', doAuth);
+  $('#authPass').addEventListener('keydown', function(e){ if (e.key === 'Enter') doAuth(); });
+
+  async function afterLogin(){
+    var r = await sb.from('profiles').select('username').eq('id', me.id).maybeSingle();
+    myName = (r.data && r.data.username) || (me.user_metadata && me.user_metadata.username) || 'me';
+    auth.hidden = true;
+    showMenuAuth();
+    subscribeRealtime();
+    $$('.crow.demo').forEach(function(c){ c.style.display = 'none'; });
+    if ((location.hash||'').indexOf('messages') >= 0) renderConvs();
+    toast('Hi ' + myName + '! 🪶 You are logged in');
+  }
+  function toast(msg){
+    var t = $('#toast'); t.textContent = msg; t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 2200);
+  }
+
+  /* realtime */
+  function subscribeRealtime(){
+    sb.channel('feather-msgs')
+      .on('postgres_changes', { event:'INSERT', schema:'public', table:'messages', filter:'recipient=eq.'+me.id }, function(pl){ onIncoming(pl.new); })
+      .subscribe();
+  }
+  function onIncoming(m){
+    if (chatWith && m.sender === chatWith.id && (location.hash||'').indexOf('chat') >= 0) addBubble('in', m.body);
+    else toast('💬 New message!');
+    if ((location.hash||'').indexOf('messages') >= 0) renderConvs();
+  }
+
+  /* real search */
+  var searchInput = $('#searchInput');
+  searchInput.addEventListener('input', async function(){
+    if (!me) return;
+    var q = searchInput.value.trim();
+    var list = $('#searchList');
+    $$('.arow.real', list).forEach(function(r){ r.remove(); });
+    if (!q) { $$('.arow.demo', list).forEach(function(r){ r.style.display=''; }); return; }
+    $$('.arow.demo', list).forEach(function(r){ r.style.display='none'; });
+    var r = await sb.from('profiles').select('id,username').ilike('username', '%'+q.replace(/[%_]/g,'')+'%').neq('id', me.id).limit(20);
+    var data = r.data || [];
+    if (!data.length){
+      var d = document.createElement('div');
+      d.className = 'arow real'; d.style.cursor = 'default';
+      d.innerHTML = '<div style="padding:8px;color:#52796F;font-size:.85rem">No users found - ask your friend to sign up!</div>';
+      list.appendChild(d);
+      return;
+    }
+    data.forEach(function(u){
+      var b = document.createElement('button');
+      b.className = 'arow real';
+      b.innerHTML = '<div class="avatar">🪶</div><div><div class="n"></div><div class="s">Tap to chat 💬</div></div><span class="r">›</span>';
+      b.querySelector('.n').textContent = u.username;
+      b.addEventListener('click', function(){ openChat(u); });
+      list.appendChild(b);
+    });
+  });
+
+  /* real conversations */
+  async function renderConvs(){
+    if (!me) return;
+    var box = $('#convList');
+    var r = await sb.from('messages').select('*').or('sender.eq.'+me.id+',recipient.eq.'+me.id).order('created_at', {ascending:false}).limit(200);
+    var seen = {}, order = [];
+    (r.data||[]).forEach(function(m){
+      var other = m.sender === me.id ? m.recipient : m.sender;
+      if (!seen[other]) { seen[other] = m; order.push(other); }
+    });
+    $('#noChats').hidden = order.length > 0;
+    if (!order.length) { box.innerHTML=''; return; }
+    var pr = await sb.from('profiles').select('id,username').in('id', order);
+    var names = {}; (pr.data||[]).forEach(function(p){ names[p.id] = p.username; });
+    box.innerHTML = '';
+    order.forEach(function(id){
+      var m = seen[id];
+      var b = document.createElement('button');
+      b.className = 'crow';
+      b.innerHTML = '<div class="avatar">🪶</div><div><div class="n"></div><div class="m"></div></div>';
+      b.querySelector('.n').textContent = names[id] || 'user';
+      var body = m.body; if (body.length > 40) body = body.slice(0,40) + '…';
+      b.querySelector('.m').textContent = (m.sender === me.id ? 'You: ' : '') + body;
+      b.addEventListener('click', function(){ openChat({ id: id, username: names[id] || 'user' }); });
+      box.appendChild(b);
+    });
+  }
+  window.addEventListener('hashchange', function(){
+    if (me && (location.hash||'').indexOf('messages') >= 0) renderConvs();
+  });
+
+  /* real chat */
+  function openChat(u){
+    chatWith = u;
+    $('#chatName').textContent = u.username;
+    $('#chatStatus').textContent = '● real chat';
+    $('#msgs').innerHTML = '<div class="day">Today</div>';
+    location.hash = '#/chat';
+    loadHistory();
+  }
+  async function loadHistory(){
+    var a = me.id, b = chatWith.id;
+    var r = await sb.from('messages').select('*')
+      .or('and(sender.eq.'+a+',recipient.eq.'+b+'),and(sender.eq.'+b+',recipient.eq.'+a+')')
+      .order('created_at', {ascending:true}).limit(100);
+    $('#msgs').innerHTML = '<div class="day">Today</div>';
+    (r.data||[]).forEach(function(m){ addBubble(m.sender === a ? 'out' : 'in', m.body); });
+  }
+  function addBubble(dir, text){
+    var d = document.createElement('div');
+    d.className = 'bubble ' + dir;
+    d.textContent = text;
+    $('#msgs').appendChild(d);
+    d.scrollIntoView({block:'end'});
+  }
+  async function realSend(){
+    var inp = $('#chatInput');
+    var v = inp.value.trim();
+    if (!v || !chatWith) return;
+    inp.value = '';
+    addBubble('out', v);
+    var r = await sb.from('messages').insert({ sender: me.id, recipient: chatWith.id, body: v });
+    if (r.error) toast('Send failed - try again');
+  }
+  document.addEventListener('click', function(e){
+    if (e.target && e.target.id === 'chatSend' && me && chatWith){ e.stopPropagation(); realSend(); }
+  }, true);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && e.target && e.target.id === 'chatInput' && me && chatWith){ e.stopPropagation(); realSend(); }
+  }, true);
+
+  /* login / logout from menu */
+  $('#menuLogin').addEventListener('click', function(){ auth.hidden = false; });
+  $('#menuLogout').addEventListener('click', async function(){ await sb.auth.signOut(); location.reload(); });
+
+  /* boot */
+  (async function(){
+    var r = await sb.auth.getSession();
+    if (r.data.session) { me = r.data.session.user; afterLogin(); }
+    else { auth.hidden = false; showMenuAuth(); }
+  })();
 })();
 </script>
 </body>
