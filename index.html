@@ -4,709 +4,229 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Feather 🪶</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%232D6A4F'/><text x='50' y='68' font-size='46' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>S</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%232D6A4F'/><text x='50' y='68' font-size='46' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>F</text></svg>">
 <style>
   :root{
     --dark:#1B4332;
     --green:#2D6A4F;
+    --bright:#40916C;
     --mint:#95D5B2;
     --mint-soft:#B7E4C7;
     --mint-bg:#D8F3DC;
-    --bright:#80ED99;
-    --play:#F48C06;
-    --live:#E63946;
-    --gold:#FFB703;
+    --paper:#F0F7F2;
+    --out:#B7E4C7;
   }
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
   body{
-    font-family:'Segoe UI',system-ui,sans-serif;
+    font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
     background:var(--mint-bg);
-    min-height:100vh;color:var(--dark);
+    color:var(--dark);
   }
-  .app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--mint-bg);position:relative;}
+  .app{max-width:520px;margin:0 auto;min-height:100dvh;background:var(--paper);display:flex;flex-direction:column;position:relative;box-shadow:0 0 40px rgba(27,67,50,.12);}
 
   /* header */
-  header{
-    background:#fff;padding:16px 18px 14px;position:sticky;top:0;z-index:40;
-    display:flex;align-items:center;justify-content:space-between;
-    box-shadow:0 1px 0 rgba(27,67,50,.08);
-  }
-  header .logo{font-size:1.5rem;color:var(--green);font-weight:800;letter-spacing:.3px;}
-  header .dots{color:var(--green);font-weight:900;letter-spacing:3px;font-size:1.1rem;background:none;border:none;cursor:pointer;padding:4px 8px;}
-  .menu{position:absolute;top:52px;right:12px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(27,67,50,.25);overflow:hidden;display:none;z-index:60;}
+  header{background:var(--dark);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20;}
+  header .logo{font-size:1.25rem;font-weight:800;letter-spacing:.2px;}
+  header .sp{flex:1;}
+  header .ic{background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:6px;border-radius:8px;}
+  header .ic:active{background:rgba(255,255,255,.15);}
+  .menu{position:absolute;top:48px;right:10px;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(27,67,50,.25);overflow:hidden;display:none;z-index:30;min-width:170px;}
   .menu.open{display:block;}
-  .menu button{display:block;width:100%;text-align:left;padding:12px 18px;border:none;background:#fff;color:var(--dark);font-size:.95rem;font-weight:600;cursor:pointer;}
+  .menu button{display:flex;gap:10px;align-items:center;width:100%;padding:13px 16px;border:none;background:#fff;font-size:.92rem;font-weight:700;color:var(--dark);cursor:pointer;}
   .menu button:active{background:var(--mint-bg);}
-
-  main{padding:14px 14px 120px;}
-  .screen{display:none;}
-  .screen.on{display:block;animation:fade .18s ease;}
-  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
-
-  h2.title{font-size:1.15rem;font-weight:800;margin:2px 0 12px;color:var(--dark);}
-
-  /* chips */
-  .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none;}
-  .chips::-webkit-scrollbar{display:none;}
-  .chip{flex:0 0 auto;border:none;border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:700;cursor:pointer;
-    background:var(--mint-soft);color:var(--dark);}
-  .chip.on{background:var(--dark);color:#fff;}
-
-  /* section header */
-  .sec{display:flex;align-items:center;gap:8px;margin:16px 0 10px;}
-  .sec .bar{width:4px;height:18px;border-radius:2px;background:var(--green);}
-  .sec .name{font-size:1rem;font-weight:800;}
-  .sec .count{background:var(--mint);color:var(--dark);font-size:.75rem;font-weight:800;border-radius:999px;padding:1px 8px;}
-  .sec .see{margin-left:auto;font-size:.8rem;color:var(--green);font-weight:700;text-decoration:none;}
-
-  /* rows */
-  .hrow{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;}
-  .hrow::-webkit-scrollbar{display:none;}
-
-  /* thumbnails */
-  .thumb{position:relative;background:var(--dark);border-radius:14px;flex:0 0 auto;
-    display:flex;align-items:center;justify-content:center;overflow:hidden;}
-  .thumb .play{width:38px;height:38px;border-radius:10px;background:var(--play);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.35);}
-  .thumb .play::after{content:"";border-left:13px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:3px;}
-  .thumb .dur{position:absolute;bottom:6px;right:8px;background:rgba(0,0,0,.65);color:#fff;font-size:.68rem;font-weight:700;border-radius:6px;padding:1px 6px;}
-  .badge{position:absolute;top:8px;left:8px;font-size:.62rem;font-weight:800;border-radius:6px;padding:2px 7px;color:#fff;}
-  .badge.short{background:var(--live);}
-  .badge.live{background:var(--live);}
-  .badge.feat{background:var(--gold);color:var(--dark);top:10px;left:10px;font-size:.68rem;}
-  .thumb .emoji-art{font-size:34px;}
-
-  /* featured */
-  .feat-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 18px rgba(27,67,50,.12);}
-  .feat-card .thumb{width:100%;height:190px;border-radius:0;}
-  .feat-meta{display:flex;gap:10px;padding:12px 14px;align-items:flex-start;}
-  .avatar{width:38px;height:38px;border-radius:50%;background:var(--bright);flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:20px;}
-  .feat-meta .t{font-weight:800;font-size:.95rem;}
-  .feat-meta .s{font-size:.78rem;color:#52796F;margin-top:2px;}
-  .feat-meta .more{margin-left:auto;color:var(--green);font-weight:900;background:none;border:none;font-size:1rem;cursor:pointer;}
-
-  /* video card */
-  .vcard{width:150px;flex:0 0 auto;}
-  .vcard .thumb{width:150px;height:92px;}
-  .vcard .t{font-size:.8rem;font-weight:700;margin-top:6px;line-height:1.25;}
-  .vcard .s{font-size:.72rem;color:#52796F;margin-top:1px;}
-
-  /* shorts */
-  .scard{width:118px;flex:0 0 auto;}
-  .scard .thumb{width:118px;height:170px;}
-  .scard .t{font-size:.76rem;font-weight:700;margin-top:6px;line-height:1.2;}
-  .scard .s{font-size:.7rem;color:#52796F;}
-
-  /* live card */
-  .lcard{width:170px;flex:0 0 auto;}
-  .lcard .thumb{width:170px;height:100px;}
-  .lcard .views{position:absolute;bottom:6px;right:8px;color:#fff;font-size:.7rem;font-weight:700;}
-
-  /* photo post */
-  .post{background:#fff;border-radius:18px;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 18px rgba(27,67,50,.12);}
-  .post .ph{height:210px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:56px;}
-  .post .cap{padding:10px 14px;font-weight:700;font-size:.92rem;}
-  .post .acts{display:flex;gap:18px;padding:0 14px 12px;font-size:.85rem;color:#52796F;font-weight:600;}
-  .post .head{display:flex;align-items:center;gap:10px;padding:12px 14px;}
-
-  /* photo tile grid */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .gtile{background:var(--dark);border-radius:14px;height:120px;display:flex;align-items:center;justify-content:center;font-size:30px;position:relative;}
-
-  /* stories */
-  .stories{display:flex;gap:14px;overflow-x:auto;padding:4px 0 14px;scrollbar-width:none;}
-  .stories::-webkit-scrollbar{display:none;}
-  .story{flex:0 0 auto;text-align:center;}
-  .story .ring{width:64px;height:64px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;font-size:28px;border:3px solid transparent;}
-  .story.unseen .ring{border-color:var(--green);}
-  .story .n{font-size:.75rem;font-weight:700;margin-top:5px;}
-
-  /* friend post rows */
-  .fpost{background:var(--mint-soft);border-radius:16px;padding:10px;margin-bottom:10px;}
-  .fpost .pt{font-size:.8rem;font-weight:700;margin-bottom:8px;}
-  .fpost .thumb{width:100%;height:110px;}
+  .me-line{font-size:.75rem;color:var(--mint-soft);font-weight:600;}
 
   /* search bar */
-  .searchbar{display:flex;align-items:center;gap:8px;background:var(--mint);border-radius:999px;padding:11px 16px;margin-bottom:12px;}
-  .searchbar input{border:none;background:transparent;flex:1;font-size:.95rem;color:var(--dark);outline:none;font-weight:600;}
-  .searchbar input::placeholder{color:rgba(27,67,50,.5);}
-  .searchbar .mag{font-size:1.05rem;}
+  .sbar{padding:10px 12px;background:var(--paper);position:sticky;top:56px;z-index:15;}
+  .sbar .wrap{display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:10px 16px;box-shadow:0 1px 4px rgba(27,67,50,.10);}
+  .sbar input{border:none;outline:none;flex:1;font:inherit;font-size:.95rem;background:transparent;color:var(--dark);}
+  .sbar .mag{font-size:1rem;}
 
-  /* account rows */
-  .arow{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:12px 14px;margin-bottom:10px;box-shadow:0 3px 12px rgba(27,67,50,.08);cursor:pointer;border:none;width:100%;text-align:left;}
-  .arow .avatar{width:46px;height:46px;font-size:22px;}
-  .arow .n{font-weight:800;font-size:.95rem;}
-  .arow .s{font-size:.78rem;color:#52796F;margin-top:1px;}
-  .arow .r{margin-left:auto;color:var(--green);font-weight:900;}
-
-  /* chat list */
-  .crow{display:flex;align-items:center;gap:12px;background:var(--mint-soft);border-radius:16px;padding:12px 14px;margin-bottom:10px;cursor:pointer;border:none;width:100%;text-align:left;}
-  .crow .avatar{width:50px;height:50px;font-size:24px;}
-  .crow .n{font-weight:700;font-size:.92rem;color:#3a6b58;}
-  .crow .m{font-weight:800;font-size:.95rem;color:var(--dark);margin-top:1px;}
+  /* chat rows */
+  .list{flex:1;overflow-y:auto;}
+  .crow{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border:none;background:transparent;cursor:pointer;text-align:left;border-bottom:1px solid rgba(27,67,50,.07);}
+  .crow:active{background:var(--mint-bg);}
+  .avatar{width:50px;height:50px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.25rem;flex:0 0 auto;text-transform:uppercase;}
+  .crow .mid{flex:1;min-width:0;}
+  .crow .n{font-weight:700;font-size:1rem;}
+  .crow .m{font-size:.84rem;color:#52796F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+  .crow .t{font-size:.72rem;color:#74A892;flex:0 0 auto;align-self:flex-start;margin-top:4px;}
+  .empty{text-align:center;color:#52796F;padding:60px 24px;font-size:.92rem;line-height:1.6;}
+  .empty .big{font-size:2.6rem;display:block;margin-bottom:10px;}
+  .sec-label{font-size:.72rem;font-weight:800;color:#74A892;letter-spacing:.08em;text-transform:uppercase;padding:12px 16px 6px;}
 
   /* chat screen */
-  .chat-head{background:var(--dark);color:#fff;display:flex;align-items:center;gap:10px;padding:12px 14px;margin:-14px -14px 0;}
-  .chat-head .bk{background:rgba(255,255,255,.14);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;}
-  .chat-head .avatar{width:40px;height:40px;}
-  .chat-head .nm{font-weight:800;}
-  .chat-head .st{font-size:.72rem;color:var(--bright);font-weight:600;}
-  .chat-head .ic{margin-left:auto;display:flex;gap:8px;}
-  .chat-head .ic span{background:rgba(255,255,255,.14);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;}
-  .msgs{padding:16px 0 10px;display:flex;flex-direction:column;gap:10px;}
-  .day{align-self:center;background:var(--mint-soft);color:#52796F;font-size:.72rem;font-weight:700;border-radius:999px;padding:3px 12px;}
-  .bubble{max-width:78%;padding:10px 14px;border-radius:18px;font-size:.9rem;line-height:1.35;}
-  .bubble.in{align-self:flex-start;background:#fff;border-bottom-left-radius:6px;box-shadow:0 2px 8px rgba(27,67,50,.1);}
-  .bubble.out{align-self:flex-end;background:var(--dark);color:#fff;border-bottom-right-radius:6px;}
-  .composer{position:sticky;bottom:74px;display:flex;align-items:center;gap:8px;margin-top:8px;}
-  .composer .plus{width:38px;height:38px;border-radius:50%;background:#fff;border:none;font-size:1.2rem;color:var(--green);font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(27,67,50,.15);}
-  .composer input{flex:1;border:none;border-radius:999px;background:var(--mint);padding:11px 16px;font-size:.9rem;outline:none;color:var(--dark);font-weight:600;}
-  .composer .snd{width:42px;height:42px;border-radius:50%;background:var(--dark);border:none;color:#fff;font-size:1rem;cursor:pointer;}
+  .chatwrap{flex:1;display:flex;flex-direction:column;min-height:0;}
+  .chat-head{background:var(--dark);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 12px;position:sticky;top:0;z-index:20;}
+  .chat-head .bk{background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:6px 8px;border-radius:8px;}
+  .chat-head .bk:active{background:rgba(255,255,255,.15);}
+  .chat-head .avatar{width:38px;height:38px;font-size:.95rem;background:var(--bright);}
+  .chat-head .nm{font-weight:700;font-size:1rem;}
+  .chat-head .st{font-size:.72rem;color:var(--mint-soft);}
+  .msgs{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:6px;background:
+    radial-gradient(circle at 20% 30%, rgba(149,213,178,.18) 0 60px, transparent 61px),
+    radial-gradient(circle at 80% 70%, rgba(149,213,178,.16) 0 70px, transparent 71px),
+    var(--mint-bg);}
+  .day{align-self:center;background:#fff;color:#52796F;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:999px;margin:4px 0 8px;box-shadow:0 1px 2px rgba(27,67,50,.10);}
+  .bubble{max-width:78%;padding:8px 12px;border-radius:14px;font-size:.93rem;line-height:1.35;box-shadow:0 1px 1px rgba(27,67,50,.12);word-break:break-word;}
+  .bubble.in{align-self:flex-start;background:#fff;border-top-left-radius:4px;}
+  .bubble.out{align-self:flex-end;background:var(--out);border-top-right-radius:4px;}
+  .bubble .tm{display:block;font-size:.62rem;color:#74A892;text-align:right;margin-top:2px;}
+  .composer{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--paper);position:sticky;bottom:0;}
+  .composer input{flex:1;border:none;outline:none;background:#fff;border-radius:999px;padding:12px 16px;font:inherit;font-size:.95rem;box-shadow:0 1px 3px rgba(27,67,50,.12);color:var(--dark);}
+  .composer .snd{width:46px;height:46px;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:1.1rem;cursor:pointer;flex:0 0 auto;}
+  .composer .snd:active{background:var(--dark);}
 
-  /* notifications */
-  .nrow{display:flex;align-items:center;gap:12px;background:var(--mint);border-radius:999px;padding:12px 16px;margin-bottom:12px;text-decoration:none;color:var(--dark);}
-  .nrow:active{background:var(--mint-soft);}
-  .nrow .nic{width:40px;height:40px;border-radius:50%;background:var(--dark);display:flex;align-items:center;justify-content:center;font-size:19px;flex:0 0 auto;}
-  .nrow .n{font-weight:800;font-size:.95rem;}
-  .nrow .s{font-size:.76rem;color:#3a6b58;margin-top:1px;}
-  .nrow .bell{margin-left:auto;position:relative;font-size:1.15rem;}
-  .nrow .bdg{position:absolute;top:-8px;right:-8px;background:var(--dark);color:#fff;font-size:.6rem;font-weight:800;border-radius:999px;padding:1px 6px;}
-  .tip{background:#fff;border-radius:14px;padding:12px 14px;font-size:.8rem;color:#52796F;line-height:1.5;margin-top:6px;}
-
-  /* profile */
-  .phead{background:#fff;border-radius:18px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 4px 18px rgba(27,67,50,.12);}
-  .phead .avatar{width:64px;height:64px;font-size:30px;background:var(--dark);color:#fff;}
-  .phead .nm{font-size:1.15rem;font-weight:800;}
-  .phead .bio{font-size:.8rem;color:#52796F;margin-top:2px;}
-  .phead .fol{font-size:.8rem;font-weight:700;margin-top:4px;}
-  .pbtns{display:flex;gap:10px;margin:12px 0;}
-  .btn{flex:1;border:none;border-radius:999px;padding:11px;font-size:.9rem;font-weight:800;cursor:pointer;}
-  .btn.dark{background:var(--dark);color:#fff;}
-  .btn.light{background:var(--mint);color:var(--dark);}
-  .lockbox{background:var(--green);border-radius:20px;padding:22px 16px;text-align:center;color:#fff;margin-top:14px;}
-  .lockbox .lt{font-weight:800;font-size:1.05rem;}
-  .lockbox .ls{font-size:.82rem;margin-top:6px;opacity:.9;}
-  .pdots{display:flex;gap:12px;justify-content:center;margin:18px 0;}
-  .pdots span{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.35);}
-  .pdots span.f{background:#fff;}
-  .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:260px;margin:0 auto;}
-  .pad button{height:62px;border-radius:50%;border:2px solid rgba(255,255,255,.5);background:transparent;color:#fff;font-size:1.3rem;font-weight:800;cursor:pointer;}
-  .pad button:active{background:rgba(255,255,255,.2);}
-  .pad .ok{background:var(--bright);border-color:var(--bright);color:var(--dark);}
-  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:96px;background:var(--dark);color:#fff;font-size:.85rem;font-weight:700;border-radius:999px;padding:10px 18px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:90;}
-  .toast.show{opacity:1;}
-
-  footer{text-align:center;color:#52796F;font-size:.8rem;padding:18px 0 8px;}
-
-  /* side floating buttons */
-  .side{position:fixed;right:max(10px,calc(50% - 230px));top:42%;z-index:50;display:flex;flex-direction:column;gap:10px;}
-  .side a{display:flex;flex-direction:column;align-items:center;gap:3px;width:62px;padding:9px 4px;border-radius:14px;
-    background:var(--mint);color:var(--dark);text-decoration:none;font-size:.62rem;font-weight:800;box-shadow:0 4px 14px rgba(27,67,50,.22);}
-  .side a .e{font-size:1.15rem;}
-  .side a.on{background:var(--dark);color:#fff;}
-  @media (max-width:380px){.side a{width:54px;}}
-
-  /* bottom nav */
-  nav.bnav{
-    position:fixed;bottom:0;left:0;right:0;z-index:50;
-    background:var(--mint);padding:10px 8px calc(10px + env(safe-area-inset-bottom));
-    display:flex;justify-content:space-around;align-items:center;
-    border-radius:22px 22px 0 0;box-shadow:0 -4px 20px rgba(27,67,50,.15);
-  }
-  .bnav a,.bnav button{display:flex;align-items:center;justify-content:center;width:52px;height:44px;border-radius:14px;border:none;background:transparent;font-size:1.35rem;cursor:pointer;text-decoration:none;}
-  .bnav .on{background:var(--dark);border-radius:50%;width:48px;height:48px;}
-  .bnav .plus{font-size:1.7rem;color:var(--dark);}
-
-  /* sheet */
-  .sheet-bg{position:fixed;inset:0;background:rgba(27,67,50,.45);z-index:70;display:none;}
-  .sheet-bg.open{display:block;}
-  .sheet{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:480px;background:#fff;border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));z-index:80;display:none;}
-  .sheet.open{display:block;}
-  .sheet h3{font-size:1rem;margin-bottom:12px;}
-  .sheet a,.sheet button{display:flex;align-items:center;gap:12px;width:100%;padding:13px 6px;border:none;background:#fff;font-size:.95rem;font-weight:700;color:var(--dark);cursor:pointer;text-decoration:none;border-radius:12px;}
-  .sheet a:active,.sheet button:active{background:var(--mint-bg);}
-  .sheet .e{font-size:1.3rem;}
-
+  /* auth overlay */
   .auth{position:fixed;inset:0;background:var(--mint-bg);z-index:80;display:flex;align-items:center;justify-content:center;padding:24px;}
   .auth[hidden]{display:none;}
-  .auth .card{background:#fff;border-radius:20px;padding:26px 22px;width:100%;max-width:340px;box-shadow:0 8px 30px rgba(27,67,50,.18);}
-  .auth h1{font-size:1.4rem;color:var(--dark);margin:0 0 4px;}
-  .auth .sub{font-size:.85rem;color:#52796F;margin-bottom:16px;}
-  .auth input{width:100%;padding:13px 14px;border-radius:12px;border:2px solid var(--mint-soft);background:var(--mint-bg);font:inherit;font-size:.95rem;margin-bottom:10px;outline:none;}
+  .auth .card{background:#fff;border-radius:20px;padding:28px 22px;width:100%;max-width:340px;box-shadow:0 8px 30px rgba(27,67,50,.18);}
+  .auth h1{font-size:1.5rem;color:var(--dark);margin:0 0 4px;}
+  .auth .sub{font-size:.85rem;color:#52796F;margin-bottom:18px;}
+  .auth input{width:100%;padding:13px 14px;border-radius:12px;border:2px solid var(--mint-soft);background:var(--mint-bg);font:inherit;font-size:.95rem;margin-bottom:10px;outline:none;color:var(--dark);}
   .auth input:focus{border-color:var(--green);}
   .auth .go{width:100%;padding:14px;border:none;border-radius:999px;background:var(--dark);color:#fff;font-weight:800;font-size:1rem;cursor:pointer;}
   .auth .go:active{background:var(--green);}
+  .auth .go:disabled{opacity:.6;}
   .auth .err{color:#B91C1C;font-size:.82rem;min-height:1.2em;margin:2px 0 8px;}
   .auth .sw{margin-top:12px;text-align:center;font-size:.85rem;color:#52796F;}
   .auth .sw button{background:none;border:none;color:var(--green);font-weight:800;font:inherit;font-size:.85rem;cursor:pointer;text-decoration:underline;}
-  .auth .skip{margin-top:10px;text-align:center;}
-  .auth .skip button{background:none;border:none;color:#8AA9A0;font:inherit;font-size:.78rem;cursor:pointer;}
+
+  .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fff;padding:10px 18px;border-radius:999px;font-size:.85rem;font-weight:600;opacity:0;pointer-events:none;transition:all .25s;z-index:90;max-width:86vw;text-align:center;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 <div class="app">
 
-  <header>
-    <div class="logo">Feather 🪶</div>
-    <button class="dots" id="menuBtn" aria-label="Menu">•••</button>
+  <header id="mainHead">
+    <div>
+      <div class="logo">Feather 🪶</div>
+      <div class="me-line" id="meLine"></div>
+    </div>
+    <div class="sp"></div>
+    <button class="ic" id="searchBtn" aria-label="Find friends">🔍</button>
+    <button class="ic" id="menuBtn" aria-label="Menu">⋮</button>
     <div class="menu" id="menu">
-      <button data-go="profile">👤 My profile</button>
-      <button id="menuAccounts">🔗 Manage linked accounts</button>
-      <button data-go="notifications">🔔 Notifications</button>
-      <button id="menuLogin" hidden>🔑 Log in / Sign up</button>
-      <button id="menuLogout" hidden>🚪 Log out</button>
+      <button id="menuLogout">🚪 Log out</button>
     </div>
   </header>
 
-  <main>
-    <!-- HOME -->
-    <section class="screen" data-screen="home">
-      <div class="chips" id="homeTabs">
-        <button class="chip on" data-tab="all">✨ All</button>
-        <button class="chip" data-tab="videos">🎬 Videos</button>
-        <button class="chip" data-tab="photos">📷 Photos</button>
-        <button class="chip" data-tab="shorts">⚡ Shorts</button>
-      </div>
+  <!-- CHATS LIST (default) -->
+  <section id="chatsView" class="chatwrap" style="display:none;">
+    <div class="list" id="convList"></div>
+    <div class="empty" id="noChats" hidden>
+      <span class="big">🪶</span>
+      No chats yet!<br>Tap 🔍 above to find your friends<br>and start chatting.
+    </div>
+  </section>
 
-      <div class="tabpage" data-tabpage="all">
-        <div class="feat-card">
-          <div class="thumb"><span class="badge feat">⭐ FEATURED</span><div class="play"></div><span class="dur">8:24</span></div>
-          <div class="feat-meta">
-            <div class="avatar">📱</div>
-            <div><div class="t">New mobile phone unbox 2026</div><div class="s">Smiley tech · 1.2M views · 2h ago</div></div>
-            <button class="more">⋮</button>
-          </div>
-        </div>
+  <!-- SEARCH VIEW -->
+  <section id="searchView" class="chatwrap" style="display:none;">
+    <div class="sbar">
+      <div class="wrap">
+        <input id="searchInput" placeholder="Search username..." autocapitalize="none" autocomplete="off">
+        <span class="mag">🔍</span>
+      </div>
+    </div>
+    <div class="list">
+      <div class="sec-label" id="searchLabel" hidden>People</div>
+      <div id="searchList"></div>
+      <div class="empty" id="searchEmpty">
+        <span class="big">🔍</span>
+        Type your friend's username<br>to find them and start a chat!
+      </div>
+    </div>
+  </section>
 
-        <div class="sec"><span class="bar"></span><span class="name">🎬 Videos</span><span class="count">5</span><a class="see" href="#/home" data-gotab="videos">See all →</a></div>
-        <div class="hrow" id="videosRowAll"></div>
+  <!-- CHAT VIEW -->
+  <section id="chatView" class="chatwrap" style="display:none;">
+    <div class="chat-head">
+      <button class="bk" id="chatBack">←</button>
+      <div class="avatar" id="chatAvatar">?</div>
+      <div>
+        <div class="nm" id="chatName">...</div>
+        <div class="st">🪶 Feather chat</div>
+      </div>
+    </div>
+    <div class="msgs" id="msgs"></div>
+    <div class="composer">
+      <input id="chatInput" placeholder="Message..." autocomplete="off">
+      <button class="snd" id="chatSend">➤</button>
+    </div>
+  </section>
 
-        <div class="sec"><span class="bar"></span><span class="name">📷 Photos</span><span class="count">6</span><a class="see" href="#/home" data-gotab="photos">See all →</a></div>
-        <div class="hrow" id="photosRowAll"></div>
-
-        <div class="sec"><span class="bar"></span><span class="name">⚡ Shorts</span><span class="count">6</span><a class="see" href="#/home" data-gotab="shorts">See all →</a></div>
-        <div class="hrow" id="shortsRowAll"></div>
-
-        <div class="sec"><span class="bar"></span><span class="name">🔴 Live Now</span><span class="count">3</span><a class="see" href="#/home">See all →</a></div>
-        <div class="hrow" id="liveRowAll"></div>
-        <footer>Made by Smiley 💛</footer>
-      </div>
-
-      <div class="tabpage" data-tabpage="videos" hidden>
-        <div class="grid" id="videosGrid" style="grid-template-columns:1fr 1fr;"></div>
-      </div>
-
-      <div class="tabpage" data-tabpage="photos" hidden>
-        <div class="post">
-          <div class="ph">🖼️</div>
-          <div class="cap">Downtown lights at night ✨</div>
-          <div class="acts"><span>❤️ 61K</span><span>💬 Comment</span><span>↗ Share</span></div>
-        </div>
-        <div class="post">
-          <div class="head"><div class="avatar">🎨</div><div><div style="font-weight:800">Art Studio</div><div style="font-size:.75rem;color:#52796F">2h ago</div></div><button class="more" style="margin-left:auto;border:none;background:none;color:var(--green);font-weight:900">⋮</button></div>
-          <div class="ph">🌆</div>
-          <div class="cap">New art drop 🎨</div>
-          <div class="acts"><span>❤️ 12K</span><span>💬 Comment</span><span>↗ Share</span></div>
-        </div>
-      </div>
-
-      <div class="tabpage" data-tabpage="shorts" hidden>
-        <div class="grid" id="shortsGrid"></div>
-      </div>
-    </section>
-
-    <!-- FRIENDS -->
-    <section class="screen" data-screen="friends">
-      <h2 class="title">Friend/Follows</h2>
-      <div class="chips">
-        <button class="chip on">✨ All</button>
-        <button class="chip">🎬 Videos</button>
-        <button class="chip">📷 Photos</button>
-        <button class="chip">🔴 Live</button>
-      </div>
-      <div class="stories">
-        <div class="story unseen"><div class="ring">🧑</div><div class="n">Alex</div></div>
-        <div class="story unseen"><div class="ring">👧</div><div class="n">Riya</div></div>
-        <div class="story"><div class="ring">🧑</div><div class="n">Sam</div></div>
-        <div class="story"><div class="ring">👦</div><div class="n">Dev</div></div>
-      </div>
-      <div class="fpost"><div class="pt">New mobile unboxing 2026</div><div class="thumb"><div class="play"></div></div></div>
-      <div class="fpost"><div class="pt">How to download free apk</div><div class="thumb"><div class="play"></div></div></div>
-      <div class="fpost"><div class="pt">New app create in world</div><div class="thumb"><div class="play"></div></div></div>
-    </section>
-
-    <!-- SEARCH -->
-    <section class="screen" data-screen="search">
-      <h2 class="title">Search your friends</h2>
-      <div class="searchbar"><input id="searchInput" placeholder="Search"><span class="mag">🔍</span></div>
-      <div class="chips">
-        <button class="chip on">Account</button>
-        <button class="chip">Videos</button>
-        <button class="chip">Photo</button>
-        <button class="chip">Other</button>
-      </div>
-      <div id="searchList">
-        <button class="arow demo" data-go="user"><div class="avatar">👑</div><div><div class="n">Smiley king</div><div class="s">About the account</div></div><span class="r">›</span></button>
-        <button class="arow demo" data-go="user"><div class="avatar">😄</div><div><div class="n">Lol smiley</div><div class="s">About the account</div></div><span class="r">›</span></button>
-        <button class="arow demo" data-go="user"><div class="avatar">👋</div><div><div class="n">Bybe smiley</div><div class="s">About the account</div></div><span class="r">🔒</span></button>
-      </div>
-    </section>
-
-    <!-- MESSAGES -->
-    <section class="screen" data-screen="messages">
-      <h2 class="title">Messages</h2>
-      <div class="searchbar"><input placeholder="Search"><span class="mag">🔍</span></div>
-      <div class="chips">
-        <button class="chip on">Friend</button>
-        <button class="chip">Channel's</button>
-      </div>
-      <div id="convList"></div>
-      <div id="noChats" hidden style="text-align:center;color:#52796F;font-size:.85rem;padding:26px 10px;">No chats yet 💬<br>Find friends in 🔍 Search and tap one to start chatting!</div>
-      <button class="crow demo" data-go="chat"><div class="avatar">👑</div><div><div class="n">Smiley king</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
-      <button class="crow demo" data-go="chat"><div class="avatar">👧</div><div><div class="n">Riya Dev</div><div class="m">Message received</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
-      <button class="crow demo" data-go="chat"><div class="avatar">💻</div><div><div class="n">Kumar Tech</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
-      <button class="crow demo" data-go="chat"><div class="avatar">😄</div><div><div class="n">Lol smiley</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
-      <button class="crow demo" data-go="chat"><div class="avatar">👋</div><div><div class="n">Bybe smiley</div><div class="m">Message sent</div></div><span class="r" style="margin-left:auto;color:var(--green);font-weight:900">⋮</span></button>
-    </section>
-
-    <!-- CHAT -->
-    <section class="screen" data-screen="chat">
-      <div class="chat-head">
-        <button class="bk" data-go="messages">←</button>
-        <div class="avatar">👑</div>
-        <div><div class="nm" id="chatName">Smiley king</div><div class="st" id="chatStatus">● Online now</div></div>
-        <div class="ic"><span>📞</span><span>📹</span></div>
-      </div>
-      <div class="msgs" id="msgs">
-        <div class="day">Today</div>
-        <div class="bubble in">Hey! 👋</div>
-        <div class="bubble out">Hi there! How are you?</div>
-        <div class="bubble in">Good! What are you up to?</div>
-      </div>
-      <div class="composer">
-        <button class="plus">+</button>
-        <input id="chatInput" placeholder="Message...">
-        <button class="snd" id="chatSend">➤</button>
-      </div>
-    </section>
-
-    <!-- NOTIFICATIONS -->
-    <section class="screen" data-screen="notifications">
-      <h2 class="title">Notification</h2>
-      <a class="nrow" href="https://web.whatsapp.com/" target="_blank" rel="noopener"><div class="nic">💬</div><div><div class="n">WhatsApp</div><div class="s">web.whatsapp.com</div></div><span class="bell">🔔<span class="bdg">10</span></span></a>
-      <a class="nrow" href="https://www.instagram.com/direct/inbox/" target="_blank" rel="noopener"><div class="nic">📸</div><div><div class="n">Instagram</div><div class="s">Direct messages</div></div><span class="bell">🔔</span></a>
-      <a class="nrow" href="https://discord.com/app" target="_blank" rel="noopener"><div class="nic">🎮</div><div><div class="n">Discord</div><div class="s">discord.com/app</div></div><span class="bell">🔔</span></a>
-      <a class="nrow" href="https://app.instinct.com/" target="_blank" rel="noopener"><div class="nic">✨</div><div><div class="n">Instinct</div><div class="s">app.instinct.com</div></div><span class="bell">🔔</span></a>
-      <a class="nrow" href="https://www.messenger.com/" target="_blank" rel="noopener"><div class="nic">📘</div><div><div class="n">Facebook</div><div class="s">Messenger</div></div><span class="bell">🔔</span></a>
-      <a class="nrow" href="https://x.com/messages" target="_blank" rel="noopener"><div class="nic">𝕏</div><div><div class="n">X</div><div class="s">Messages</div></div><span class="bell">🔔</span></a>
-      <a class="nrow" href="https://mail.google.com/" target="_blank" rel="noopener"><div class="nic">📥</div><div><div class="n">Inbox</div><div class="s">Gmail</div></div><span class="bell">🔔</span></a>
-      <div class="tip">💡 Works best in Chrome — tap the ⋮ menu at the top and choose <b>Open in Chrome</b>. Each app will ask you to log in the first time.</div>
-    </section>
-
-    <!-- OWN PROFILE -->
-    <section class="screen" data-screen="profile">
-      <div class="phead">
-        <div class="avatar">S</div>
-        <div><div class="nm">Smiley</div><div class="bio">All my accounts in one place</div><div class="fol">🤝 260 followers</div></div>
-      </div>
-      <div class="sec"><span class="bar"></span><span class="name">🎬 Videos</span></div>
-      <div class="hrow" id="videosRowProfile"></div>
-      <div class="sec"><span class="bar"></span><span class="name">📷 Photos</span></div>
-      <div class="post" style="background:var(--mint-soft);box-shadow:none;">
-        <div class="head"><div class="avatar">👋</div><div><div style="font-weight:800">Bybe smiley <span style="color:#52796F;font-weight:600">/ Instagram</span></div><div style="font-size:.75rem;color:#52796F">About this account information</div></div></div>
-        <div class="grid" style="grid-template-columns:repeat(3,1fr);padding:0 12px 12px;">
-          <div class="gtile" style="height:84px">🖼️</div><div class="gtile" style="height:84px">🖼️</div><div class="gtile" style="height:84px">🖼️</div>
-          <div class="gtile" style="height:84px">🖼️</div><div class="gtile" style="height:84px">🖼️</div><div class="gtile" style="height:84px">🖼️</div>
-        </div>
-      </div>
-      <div class="sec"><span class="bar"></span><span class="name">🔴 Live</span></div>
-      <div class="post" style="background:var(--mint-soft);box-shadow:none;">
-        <div class="head"><div class="avatar">📡</div><div><div style="font-weight:800">Smiley live <span style="color:#52796F;font-weight:600">/ YouTube</span></div><div style="font-size:.75rem;color:#52796F">Live stream content</div></div></div>
-        <div class="thumb" style="width:calc(100% - 24px);margin:0 12px 12px;height:130px;"><span class="badge live">● LIVE</span><span style="font-size:34px">🛰️</span><span class="views">👁 2.4K</span></div>
-      </div>
-      <button class="btn dark" id="manageBtn" style="width:100%;">Manage Linked Accounts</button>
-    </section>
-
-    <!-- USER PROFILE -->
-    <section class="screen" data-screen="user">
-      <div class="phead">
-        <div class="avatar">👑</div>
-        <div style="flex:1"><div class="nm">Smiley king</div><div class="bio">All accounts in one place</div><div class="fol">🤝 260 followers</div></div>
-      </div>
-      <div class="pbtns">
-        <button class="btn dark" id="followBtn">Follow</button>
-        <button class="btn light" data-go="chat">Message</button>
-      </div>
-      <div class="chips">
-        <button class="chip on">✨ All</button>
-        <button class="chip">🎬 Videos</button>
-        <button class="chip">📷 Photos</button>
-        <button class="chip">🔴 Live</button>
-      </div>
-      <div class="lockbox" id="lockbox">
-        <div style="font-size:1.4rem">🔒</div>
-        <div class="lt">Private Profile</div>
-        <div class="ls">Smiley king</div>
-        <div class="ls">This profile is locked. Enter PIN or follow to unlock.</div>
-        <div class="pdots" id="pdots"><span></span><span></span><span></span><span></span></div>
-        <div class="pad" id="pad">
-          <button>1</button><button>2</button><button>3</button>
-          <button>4</button><button>5</button><button>6</button>
-          <button>7</button><button>8</button><button>9</button>
-          <button data-k="b">⌫</button><button>0</button><button class="ok" data-k="ok">✓</button>
-        </div>
-      </div>
-      <div id="unlocked" hidden>
-        <div class="sec"><span class="bar"></span><span class="name">🎬 Videos</span></div>
-        <div class="hrow" id="videosRowUser"></div>
-        <div class="sec"><span class="bar"></span><span class="name">📷 Photos</span></div>
-        <div class="grid" style="grid-template-columns:repeat(3,1fr);">
-          <div class="gtile" style="height:90px">🖼️</div><div class="gtile" style="height:90px">🖼️</div><div class="gtile" style="height:90px">🖼️</div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- side floating -->
-  <div class="side">
-    <a href="#/friends" data-side="friends"><span class="e">🤝</span>Friend/follow</a>
-    <a href="#/search" data-side="search"><span class="e">🔍</span>Search</a>
-    <a href="#/messages" data-side="messages"><span class="e">💬</span>Messages</a>
-  </div>
-
-  <!-- bottom nav -->
-  <nav class="bnav">
-    <a href="#/home" data-nav="home">🏠</a>
-    <button class="plus" id="plusBtn">＋</button>
-    <a href="#/notifications" data-nav="notifications">🔔</a>
-    <a href="#/profile" data-nav="profile">👤</a>
-  </nav>
-
-  <!-- create sheet -->
-  <div class="sheet-bg" id="sheetBg"></div>
-  <div class="sheet" id="createSheet">
-    <h3>Create</h3>
-    <button data-toast="📷 Photo post coming soon (demo)"><span class="e">📷</span>Photo post</button>
-    <button data-toast="🎬 Video upload coming soon (demo)"><span class="e">🎬</span>Video</button>
-    <button data-toast="⚡ Short coming soon (demo)"><span class="e">⚡</span>Short</button>
-    <button data-toast="🔴 Live coming soon (demo)"><span class="e">🔴</span>Go live</button>
-  </div>
-
-  <!-- accounts sheet -->
-  <div class="sheet" id="accountsSheet">
-    <h3>Manage Linked Accounts</h3>
-    <a href="https://web.whatsapp.com/" target="_blank" rel="noopener"><span class="e">💬</span>WhatsApp — web.whatsapp.com</a>
-    <a href="https://www.instagram.com/direct/inbox/" target="_blank" rel="noopener"><span class="e">📸</span>Instagram — Direct messages</a>
-    <a href="https://discord.com/app" target="_blank" rel="noopener"><span class="e">🎮</span>Discord — discord.com/app</a>
-    <a href="https://app.instinct.com/" target="_blank" rel="noopener"><span class="e">✨</span>Instinct — app.instinct.com</a>
-  </div>
-
+  <!-- AUTH -->
   <div class="auth" id="auth" hidden>
     <div class="card">
       <h1>Feather 🪶</h1>
-      <div class="sub" id="authSub">Log in to chat with your friends for real!</div>
+      <div class="sub" id="authSub">Log in to chat with your friends!</div>
       <input id="authUser" placeholder="Username" autocomplete="username" autocapitalize="none">
       <input id="authPass" type="password" placeholder="Password" autocomplete="current-password">
       <div class="err" id="authErr"></div>
       <button class="go" id="authGo">Log in</button>
-      <div class="sw" id="authSw">New here? <button id="authToggle">Create an account</button></div>
-      <div class="skip"><button id="authSkip">Just looking around →</button></div>
+      <div class="sw" id="authSw"></div>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
 </div>
 
-<script>
-(() => {
-  const $ = (s, r) => (r||document).querySelector(s);
-  const $$ = (s, r) => [...(r||document).querySelectorAll(s)];
-
-  /* data */
-  const videos = [
-    {t:'New mobile phone unbox 2026', s:'Smiley tech', d:'8:24'},
-    {t:'How to find new gun in all maps', s:'Smiley gaming', d:'12:05'},
-    {t:'Traveling to Japan vlog', s:'Travel Guide', d:'6:42'},
-    {t:'Beach morning walk', s:'Travel Guide', d:'4:20'},
-    {t:'Mountain climb adventure', s:'Fitness Pro', d:'9:11'}
-  ];
-  const shorts = [
-    {t:'Epic headshot compilation 🎯', v:'3.1M views', d:'0:58'},
-    {t:'Viral dance challenge 💃', v:'5.6M views', d:'0:47'},
-    {t:'Try not to laugh 😂', v:'2.9M views', d:'0:59'},
-    {t:'60-second recipe hack 🍳', v:'1.8M views', d:'0:55'},
-    {t:'Hidden beach in 30 sec 🏖', v:'Travel Guide', d:'0:52'},
-    {t:'Morning routine', v:'Fitness Pro', d:'0:59'}
-  ];
-  const lives = [
-    {t:'Smiley live', s:'YouTube', v:'2.4K'},
-    {t:'Coding stream', s:'Kumar Tech', v:'860'},
-    {t:'Gaming with friends', s:'Smiley gaming', v:'1.1K'}
-  ];
-
-  const vcard = v => '<div class="vcard"><div class="thumb"><div class="play"></div><span class="dur">'+v.d+'</span></div><div class="t">'+v.t+'</div><div class="s">'+v.s+'</div></div>';
-  const scard = s => '<div class="scard"><div class="thumb"><span class="badge short">SHORT</span><div class="play"></div><span class="dur">'+s.d+'</span></div><div class="t">'+s.t+'</div><div class="s">'+s.v+'</div></div>';
-  const lcard = l => '<div class="lcard"><div class="thumb"><span class="badge live">● LIVE</span><span class="emoji-art">🛰️</span><span class="views">👁 '+l.v+'</span></div><div class="t" style="font-size:.8rem;font-weight:700;margin-top:6px">'+l.t+'</div><div class="s" style="font-size:.72rem;color:#52796F">'+l.s+'</div></div>';
-  const ptile = () => '<div class="gtile" style="width:118px;flex:0 0 auto">🖼️</div>';
-
-  $('#videosRowAll').innerHTML = videos.map(vcard).join('');
-  $('#shortsRowAll').innerHTML = shorts.map(scard).join('');
-  $('#liveRowAll').innerHTML = lives.map(lcard).join('');
-  $('#photosRowAll').innerHTML = Array(6).fill(0).map(ptile).join('');
-  $('#videosGrid').innerHTML = videos.map(v => '<div><div class="thumb" style="width:100%;height:110px"><div class="play"></div><span class="dur">'+v.d+'</span></div><div style="font-size:.8rem;font-weight:700;margin-top:6px">'+v.t+'</div><div style="font-size:.72rem;color:#52796F">'+v.s+'</div></div>').join('');
-  $('#shortsGrid').innerHTML = shorts.map(s => '<div><div class="thumb" style="width:100%;height:200px"><span class="badge short">SHORT</span><div class="play"></div><span class="dur">'+s.d+'</span></div><div style="font-size:.78rem;font-weight:700;margin-top:6px">'+s.t+'</div><div style="font-size:.7rem;color:#52796F">'+s.v+'</div></div>').join('');
-  $('#videosRowProfile').innerHTML = videos.slice(0,3).map(vcard).join('');
-  $('#videosRowUser').innerHTML = videos.slice(0,3).map(vcard).join('');
-
-  /* routing */
-  const screens = $$('.screen');
-  const valid = ['home','friends','search','messages','chat','notifications','profile','user'];
-  function route(){
-    let h = (location.hash||'#/home').replace('#/','');
-    if (!valid.includes(h)) h = 'home';
-    screens.forEach(s => s.classList.toggle('on', s.dataset.screen === h));
-    $$('.bnav a').forEach(a => a.classList.toggle('on', a.dataset.nav === h));
-    $$('.side a').forEach(a => a.classList.toggle('on', a.dataset.side === h || (h==='chat' && a.dataset.side==='messages') || (h==='user' && a.dataset.side==='search')));
-    window.scrollTo(0,0);
-    closeSheets();
-  }
-  window.addEventListener('hashchange', route);
-
-  document.addEventListener('click', e => {
-    const g = e.target.closest('[data-go]');
-    if (g) { location.hash = '#/' + g.dataset.go; }
-    const gt = e.target.closest('[data-gotab]');
-    if (gt) { e.preventDefault(); switchTab(gt.dataset.gotab); location.hash = '#/home'; }
-  });
-
-  /* home tabs */
-  function switchTab(name){
-    $$('#homeTabs .chip').forEach(c => c.classList.toggle('on', c.dataset.tab === name));
-    $$('.tabpage').forEach(p => p.hidden = p.dataset.tabpage !== name);
-  }
-  $('#homeTabs').addEventListener('click', e => {
-    const c = e.target.closest('.chip');
-    if (c) switchTab(c.dataset.tab);
-  });
-
-  /* chip toggles (friends/search/messages/user decorative chips) */
-  $$('.chips').forEach(ch => {
-    if (ch.id === 'homeTabs') return;
-    ch.addEventListener('click', e => {
-      const c = e.target.closest('.chip');
-      if (!c) return;
-      $$('.chip', ch).forEach(x => x.classList.toggle('on', x === c));
-    });
-  });
-
-  /* menu */
-  const menu = $('#menu');
-  $('#menuBtn').addEventListener('click', e => { e.stopPropagation(); menu.classList.toggle('open'); });
-  document.addEventListener('click', () => menu.classList.remove('open'));
-
-  /* sheets */
-  const bg = $('#sheetBg');
-  function openSheet(id){ bg.classList.add('open'); $(id).classList.add('open'); }
-  function closeSheets(){ bg.classList.remove('open'); $$('.sheet').forEach(s => s.classList.remove('open')); }
-  bg.addEventListener('click', closeSheets);
-  $('#plusBtn').addEventListener('click', () => openSheet('#createSheet'));
-  $('#manageBtn').addEventListener('click', () => openSheet('#accountsSheet'));
-  $('#menuAccounts').addEventListener('click', () => openSheet('#accountsSheet'));
-
-  /* toast */
-  const toast = $('#toast');
-  let toastT;
-  function showToast(msg){
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastT);
-    toastT = setTimeout(() => toast.classList.remove('show'), 1800);
-  }
-  document.addEventListener('click', e => {
-    const t = e.target.closest('[data-toast]');
-    if (t) { closeSheets(); showToast(t.dataset.toast); }
-  });
-
-  /* search filter */
-  $('#searchInput').addEventListener('input', e => {
-    const q = e.target.value.toLowerCase();
-    $$('#searchList .arow').forEach(r => r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none');
-  });
-
-  /* chat */
-  const msgs = $('#msgs'), chatInput = $('#chatInput');
-  function sendChat(){
-    const v = chatInput.value.trim();
-    if (!v) return;
-    const b = document.createElement('div');
-    b.className = 'bubble out';
-    b.textContent = v;
-    msgs.appendChild(b);
-    chatInput.value = '';
-    b.scrollIntoView({block:'end'});
-    setTimeout(() => {
-      const r = document.createElement('div');
-      r.className = 'bubble in';
-      r.textContent = 'Nice! 😄';
-      msgs.appendChild(r);
-      r.scrollIntoView({block:'end'});
-    }, 900);
-  }
-  $('#chatSend').addEventListener('click', sendChat);
-  chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
-
-  /* pin pad */
-  let pin = '';
-  const pdots = $$('#pdots span');
-  function unlock(){
-    $('#lockbox').style.display = 'none';
-    $('#unlocked').hidden = false;
-    showToast('Profile unlocked (demo)');
-  }
-  $('#pad').addEventListener('click', e => {
-    const b = e.target.closest('button');
-    if (!b) return;
-    const k = b.dataset.k || b.textContent.trim();
-    if (k === 'b') { pin = pin.slice(0,-1); }
-    else if (k === 'ok') { if (pin.length === 4) unlock(); else showToast('Enter 4 digits'); return; }
-    else if (pin.length < 4) { pin += k; }
-    pdots.forEach((d,i) => d.classList.toggle('f', i < pin.length));
-    if (pin.length === 4) setTimeout(unlock, 350);
-  });
-  $('#followBtn').addEventListener('click', e => {
-    const b = e.target;
-    if (b.textContent === 'Follow') { b.textContent = 'Following'; unlock(); }
-    else b.textContent = 'Follow';
-  });
-
-  route();
-})();
-</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
   var SUPA_URL = 'https://pktbulxtdobmylebxihw.supabase.co';
   var SUPA_KEY = 'sb_publishable_Osvp7GdHx-FWOy5vBEy5iA_k9n5M9pp';
   var sb = supabase.createClient(SUPA_URL, SUPA_KEY);
-  var $ = function(s,r){ return (r||document).querySelector(s); };
-  var $$ = function(s,r){ return [].slice.call((r||document).querySelectorAll(s)); };
-  var me = null, myName = null, chatWith = null;
+  var $ = function(s){ return document.querySelector(s); };
+  var $$ = function(s){ return [].slice.call(document.querySelectorAll(s)); };
+  var me = null, myName = null, chatWith = null, view = 'chats';
   var auth = $('#auth'), err = $('#authErr'), mode = 'login';
 
+  /* ---------- helpers ---------- */
+  function toast(msg){
+    var t = $('#toast'); t.textContent = msg; t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 2400);
+  }
+  function esc(s){ var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  function initial(name){ return (name||'?').trim().charAt(0).toUpperCase() || '?'; }
+  function fmtTime(iso){
+    var d = new Date(iso);
+    var now = new Date();
+    var sameDay = d.toDateString() === now.toDateString();
+    if (sameDay) return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    return d.toLocaleDateString([], {day:'numeric', month:'short'});
+  }
+
+  /* ---------- views ---------- */
+  function show(v){
+    view = v;
+    $('#chatsView').style.display = v === 'chats' ? 'flex' : 'none';
+    $('#searchView').style.display = v === 'search' ? 'flex' : 'none';
+    $('#chatView').style.display = v === 'chat' ? 'flex' : 'none';
+    $('#mainHead').style.display = v === 'chat' ? 'none' : 'flex';
+    closeMenu();
+    if (v === 'chats' && me) renderConvs();
+    if (v === 'search') setTimeout(function(){ $('#searchInput').focus(); }, 60);
+  }
+
+  /* ---------- menu ---------- */
+  var menu = $('#menu');
+  function closeMenu(){ menu.classList.remove('open'); }
+  $('#menuBtn').addEventListener('click', function(e){ e.stopPropagation(); menu.classList.toggle('open'); });
+  document.addEventListener('click', closeMenu);
+  $('#menuLogout').addEventListener('click', async function(){ await sb.auth.signOut(); location.reload(); });
+
+  /* ---------- auth ---------- */
   function setMode(m){
     mode = m;
     $('#authGo').textContent = m === 'login' ? 'Log in' : 'Create account';
-    $('#authSub').textContent = m === 'login' ? 'Log in to chat with your friends for real!' : 'Pick a username and password. No email needed!';
+    $('#authSub').textContent = m === 'login' ? 'Log in to chat with your friends!' : 'Pick a username and password. No email needed!';
     $('#authSw').innerHTML = m === 'login' ? 'New here? <button id="authToggle">Create an account</button>' : 'Have an account? <button id="authToggle">Log in</button>';
     $('#authToggle').addEventListener('click', function(){ setMode(mode === 'login' ? 'signup' : 'login'); });
   }
   setMode('login');
-  $('#authSkip').addEventListener('click', function(){ auth.hidden = true; showMenuAuth(); });
-
-  function showMenuAuth(){
-    $('#menuLogin').hidden = !!me;
-    $('#menuLogout').hidden = !me;
-  }
 
   async function doAuth(){
     var u = $('#authUser').value.trim().toLowerCase();
@@ -719,7 +239,7 @@
       var email = u + '@feather.chat';
       if (mode === 'signup'){
         var r = await sb.auth.signUp({ email: email, password: p, options: { data: { username: u } } });
-        if (r.error) { err.textContent = /already/.test(r.error.message) ? 'That username is taken' : r.error.message; return; }
+        if (r.error) { err.textContent = /already|registered/i.test(r.error.message) ? 'That username is taken' : r.error.message; return; }
         me = r.data.user;
         if (!me) { err.textContent = 'Try logging in instead'; return; }
         var pr = await sb.from('profiles').insert({ id: me.id, username: u });
@@ -743,111 +263,105 @@
       await sb.from('profiles').insert({ id: me.id, username: un });
       r = await sb.from('profiles').select('username').eq('id', me.id).maybeSingle();
     }
-    myName = (r.data && r.data.username) || (me.user_metadata && me.user_metadata.username) || 'me';
+    myName = (r.data && r.data.username) || 'me';
     auth.hidden = true;
-    showMenuAuth();
+    $('#meLine').textContent = '@' + myName;
     subscribeRealtime();
-    $$('.crow.demo').forEach(function(c){ c.style.display = 'none'; });
-    if ((location.hash||'').indexOf('messages') >= 0) renderConvs();
-    toast('Hi ' + myName + '! 🪶 You are logged in');
-  }
-  function toast(msg){
-    var t = $('#toast'); t.textContent = msg; t.classList.add('show');
-    setTimeout(function(){ t.classList.remove('show'); }, 2200);
+    show('chats');
+    toast('Hi ' + myName + '! 🪶');
   }
 
-  /* realtime */
+  /* ---------- realtime ---------- */
   function subscribeRealtime(){
     sb.channel('feather-msgs')
       .on('postgres_changes', { event:'INSERT', schema:'public', table:'messages', filter:'recipient=eq.'+me.id }, function(pl){ onIncoming(pl.new); })
       .subscribe();
   }
   function onIncoming(m){
-    if (chatWith && m.sender === chatWith.id && (location.hash||'').indexOf('chat') >= 0) addBubble('in', m.body);
-    else toast('💬 New message!');
-    if ((location.hash||'').indexOf('messages') >= 0) renderConvs();
+    if (chatWith && m.sender === chatWith.id && view === 'chat') addBubble('in', m.body, m.created_at);
+    else toast('💬 New message');
+    if (view === 'chats') renderConvs();
   }
 
-  /* real search */
-  var searchInput = $('#searchInput');
-  searchInput.addEventListener('input', async function(){
-    if (!me) return;
-    var q = searchInput.value.trim();
-    var list = $('#searchList');
-    $$('.arow.real', list).forEach(function(r){ r.remove(); });
-    if (!q) { $$('.arow.demo', list).forEach(function(r){ r.style.display=''; }); return; }
-    $$('.arow.demo', list).forEach(function(r){ r.style.display='none'; });
-    var r = await sb.from('profiles').select('id,username').ilike('username', '%'+q.replace(/%/g,'')+'%').neq('id', me.id).limit(20);
-    var data = r.data || [];
-    if (!data.length){
-      var d = document.createElement('div');
-      d.className = 'arow real'; d.style.cursor = 'default';
-      d.innerHTML = '<div style="padding:8px;color:#52796F;font-size:.85rem">No users found - ask your friend to sign up!</div>';
-      list.appendChild(d);
-      return;
-    }
-    data.forEach(function(u){
-      var b = document.createElement('button');
-      b.className = 'arow real';
-      b.innerHTML = '<div class="avatar">🪶</div><div><div class="n"></div><div class="s">Tap to chat 💬</div></div><span class="r">›</span>';
-      b.querySelector('.n').textContent = u.username;
-      b.addEventListener('click', function(){ openChat(u); });
-      list.appendChild(b);
-    });
-  });
-
-  /* real conversations */
+  /* ---------- chats list ---------- */
   async function renderConvs(){
     if (!me) return;
     var box = $('#convList');
-    var r = await sb.from('messages').select('*').or('sender.eq.'+me.id+',recipient.eq.'+me.id).order('created_at', {ascending:false}).limit(200);
+    var r = await sb.from('messages').select('*').or('sender.eq.'+me.id+',recipient.eq.'+me.id).order('created_at', {ascending:false}).limit(300);
     var seen = {}, order = [];
     (r.data||[]).forEach(function(m){
       var other = m.sender === me.id ? m.recipient : m.sender;
       if (!seen[other]) { seen[other] = m; order.push(other); }
     });
     $('#noChats').hidden = order.length > 0;
-    if (!order.length) { box.innerHTML=''; return; }
+    box.innerHTML = '';
+    if (!order.length) return;
     var pr = await sb.from('profiles').select('id,username').in('id', order);
     var names = {}; (pr.data||[]).forEach(function(p){ names[p.id] = p.username; });
-    box.innerHTML = '';
     order.forEach(function(id){
       var m = seen[id];
+      var uname = names[id] || 'user';
       var b = document.createElement('button');
       b.className = 'crow';
-      b.innerHTML = '<div class="avatar">🪶</div><div><div class="n"></div><div class="m"></div></div>';
-      b.querySelector('.n').textContent = names[id] || 'user';
-      var body = m.body; if (body.length > 40) body = body.slice(0,40) + '…';
+      b.innerHTML = '<div class="avatar">' + esc(initial(uname)) + '</div>' +
+        '<div class="mid"><div class="n">' + esc(uname) + '</div><div class="m"></div></div>' +
+        '<div class="t">' + fmtTime(m.created_at) + '</div>';
+      var body = m.body; if (body.length > 42) body = body.slice(0,42) + '…';
       b.querySelector('.m').textContent = (m.sender === me.id ? 'You: ' : '') + body;
-      b.addEventListener('click', function(){ openChat({ id: id, username: names[id] || 'user' }); });
+      b.addEventListener('click', function(){ openChat({ id: id, username: uname }); });
       box.appendChild(b);
     });
   }
-  window.addEventListener('hashchange', function(){
-    if (me && (location.hash||'').indexOf('messages') >= 0) renderConvs();
+
+  /* ---------- search ---------- */
+  $('#searchBtn').addEventListener('click', function(){ show(view === 'search' ? 'chats' : 'search'); });
+  $('#searchInput').addEventListener('input', async function(){
+    if (!me) return;
+    var q = this.value.trim();
+    var list = $('#searchList');
+    list.innerHTML = '';
+    $('#searchLabel').hidden = true;
+    $('#searchEmpty').hidden = !!q;
+    if (!q) return;
+    var r = await sb.from('profiles').select('id,username').ilike('username', '%'+q.replace(/%/g,'')+'%').neq('id', me.id).limit(20);
+    var data = r.data || [];
+    if (!data.length){
+      list.innerHTML = '<div class="empty" style="padding:30px 20px;">No one found with that name 🤔<br>Ask your friend to sign up first!</div>';
+      return;
+    }
+    $('#searchLabel').hidden = false;
+    data.forEach(function(u){
+      var b = document.createElement('button');
+      b.className = 'crow';
+      b.innerHTML = '<div class="avatar">' + esc(initial(u.username)) + '</div>' +
+        '<div class="mid"><div class="n">' + esc(u.username) + '</div><div class="m">Tap to chat 💬</div></div>';
+      b.addEventListener('click', function(){ openChat(u); });
+      list.appendChild(b);
+    });
   });
 
-  /* real chat */
+  /* ---------- chat ---------- */
+  $('#chatBack').addEventListener('click', function(){ chatWith = null; show('chats'); });
   function openChat(u){
     chatWith = u;
     $('#chatName').textContent = u.username;
-    $('#chatStatus').textContent = '● real chat';
+    $('#chatAvatar').textContent = initial(u.username);
     $('#msgs').innerHTML = '<div class="day">Today</div>';
-    location.hash = '#/chat';
+    show('chat');
     loadHistory();
   }
   async function loadHistory(){
     var a = me.id, b = chatWith.id;
     var r = await sb.from('messages').select('*')
       .or('and(sender.eq.'+a+',recipient.eq.'+b+'),and(sender.eq.'+b+',recipient.eq.'+a+')')
-      .order('created_at', {ascending:true}).limit(100);
+      .order('created_at', {ascending:true}).limit(200);
     $('#msgs').innerHTML = '<div class="day">Today</div>';
-    (r.data||[]).forEach(function(m){ addBubble(m.sender === a ? 'out' : 'in', m.body); });
+    (r.data||[]).forEach(function(m){ addBubble(m.sender === a ? 'out' : 'in', m.body, m.created_at); });
   }
-  function addBubble(dir, text){
+  function addBubble(dir, text, ts){
     var d = document.createElement('div');
     d.className = 'bubble ' + dir;
-    d.textContent = text;
+    d.innerHTML = esc(text) + '<span class="tm">' + (ts ? fmtTime(ts) : '') + '</span>';
     $('#msgs').appendChild(d);
     d.scrollIntoView({block:'end'});
   }
@@ -856,26 +370,18 @@
     var v = inp.value.trim();
     if (!v || !chatWith) return;
     inp.value = '';
-    addBubble('out', v);
+    addBubble('out', v, new Date().toISOString());
     var r = await sb.from('messages').insert({ sender: me.id, recipient: chatWith.id, body: v });
     if (r.error) toast('Send failed - try again');
   }
-  document.addEventListener('click', function(e){
-    if (e.target && e.target.id === 'chatSend' && me && chatWith){ e.stopPropagation(); realSend(); }
-  }, true);
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Enter' && e.target && e.target.id === 'chatInput' && me && chatWith){ e.stopPropagation(); realSend(); }
-  }, true);
+  $('#chatSend').addEventListener('click', realSend);
+  $('#chatInput').addEventListener('keydown', function(e){ if (e.key === 'Enter') realSend(); });
 
-  /* login / logout from menu */
-  $('#menuLogin').addEventListener('click', function(){ auth.hidden = false; });
-  $('#menuLogout').addEventListener('click', async function(){ await sb.auth.signOut(); location.reload(); });
-
-  /* boot */
+  /* ---------- boot ---------- */
   (async function(){
     var r = await sb.auth.getSession();
     if (r.data.session) { me = r.data.session.user; afterLogin(); }
-    else { auth.hidden = false; showMenuAuth(); }
+    else auth.hidden = false;
   })();
 })();
 </script>
